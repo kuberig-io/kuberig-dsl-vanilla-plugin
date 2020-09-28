@@ -11,12 +11,14 @@ import kotlin.test.assertNotNull
  * A simple unit test for the 'io.kuberig.dsl.vanilla.plugin.greeting' plugin.
  */
 class KuberigDslVanillaPluginPluginTest {
-    @Test fun `plugin registers task`() {
+    @Test fun `plugin registers tasks`() {
         // Create a test project and apply the plugin
         val project = ProjectBuilder.builder().build()
         project.plugins.apply("io.kuberig.dsl.vanilla.plugin")
 
         // Verify the result
-        assertNotNull(project.tasks.findByName("greeting"))
+        assertNotNull(project.tasks.findByName("generateDslProjects"))
+        assertNotNull(project.tasks.findByName("publishMissing"))
+        assertNotNull(project.tasks.findByName("showMissingFromJCenter"))
     }
 }

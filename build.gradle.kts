@@ -24,6 +24,14 @@ dependencies {
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    implementation("com.mashape.unirest:unirest-java:1.4.9")
+
+    implementation("com.fasterxml.jackson.core:jackson-core:2.9.10")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.10")
+    implementation("com.fasterxml.jackson.module:jackson-modules-java8:2.9.10")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.10")
+
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 

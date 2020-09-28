@@ -3,18 +3,40 @@
  */
 package io.kuberig.dsl.vanilla.plugin
 
-import org.gradle.api.Project
 import org.gradle.api.Plugin
+import org.gradle.api.Project
+import java.util.*
 
-/**
- * A simple 'hello world' plugin.
- */
 class KuberigDslVanillaPluginPlugin: Plugin<Project> {
     override fun apply(project: Project) {
-        // Register a task
-        project.tasks.register("greeting") { task ->
-            task.doLast {
-                println("Hello from plugin 'io.kuberig.dsl.vanilla.plugin'")
+
+        project.extensions.create("kubeRigDslVanilla", KubeRigDslVanillaPluginExtension::class.java)
+
+        project.tasks.register("generateDslProjects", DslProjectsGeneratorTask::class.java)
+
+        project.tasks.register("showMissingFromJCenter", ShowMissingFromJCenterTask::class.java)
+
+        project.tasks.register(
+                "publishMissing",
+                PublishMissing::class.java
+        ) { task ->
+            val version = project.version.toString()
+            val subProjects = project.subprojects
+            val subProjectsToPublish: MutableList<Project> = ArrayList()
+            for (subProject in subProjects) {
+                if (!jcenterExists(subProject.name, version)) {
+                    subProjectsToPublish.add(subProject)
+                }
+            }
+            if (subProjectsToPublish.isEmpty()) {
+                project.logger.warn("Nothing missing to publish.")
+            } else {
+                for (subProjectToPublish in subProjectsToPublish) {
+                    project.logger.info(subProjectToPublish.name + " needs to be published.")
+                    task.dependsOn(
+                            subProjectToPublish.tasks.getByName("bintrayUpload")
+                    )
+                }
             }
         }
     }
