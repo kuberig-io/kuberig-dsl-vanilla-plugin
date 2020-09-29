@@ -11,6 +11,8 @@ plugins {
     id("maven-publish")
 }
 
+group = "io.kuberig.dsl.vanilla.plugin"
+
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
