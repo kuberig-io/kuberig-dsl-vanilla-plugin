@@ -63,20 +63,20 @@ jobs:
 
 workflows:
   build:
-    context: kuberig-context
     jobs:
       - build:
+          context: kuberig-context
           pre-steps:
             - run:
                 command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
   release:
-    context: kuberig-context
     filters:
       tags:
         only:
           - /.*/
     jobs:
       - release-build:
+          context: kuberig-context
           pre-steps:
             - run:
                 command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
