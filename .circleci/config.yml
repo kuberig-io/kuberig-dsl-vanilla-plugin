@@ -14,8 +14,8 @@ workflows:
       - release:
           context: kuberig-context
           filters:
-            only:
-              tags:
+            tags:
+              only:
                 - /.*/
           jobs:
             - build-and-upload
