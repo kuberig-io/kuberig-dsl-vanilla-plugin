@@ -11,9 +11,9 @@ workflows:
           context: kuberig-context
           jobs:
             - build:
-                - pre-steps:
-                    - run:
-                        - command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+                pre-steps:
+                  - run:
+                      command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
       - release:
           context: kuberig-context
           filters:
@@ -22,9 +22,9 @@ workflows:
                 - /.*/
           jobs:
             - build-and-upload:
-                - pre-steps:
-                    - run:
-                        - command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
+                pre-steps:
+                  - run:
+                      command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
 
 executors:
   gradle:
