@@ -80,5 +80,5 @@ jobs:
     executor: gradle
     steps:
       - checkout
-      - gradle-build
+      - gradle-build:
           upload: true
