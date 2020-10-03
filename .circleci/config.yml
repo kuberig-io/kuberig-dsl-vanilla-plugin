@@ -76,7 +76,7 @@ workflows:
         only:
           - /.*/
     jobs:
-      - build-and-upload:
+      - release-build:
           pre-steps:
             - run:
                 command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
