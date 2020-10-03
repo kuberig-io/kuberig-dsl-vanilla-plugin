@@ -70,13 +70,13 @@ workflows:
             - run:
                 command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
   release:
-    filters:
-      tags:
-        only:
-          - /.*/
     jobs:
       - release-build:
           context: kuberig-context
+          filters:
+            tags:
+              only:
+                - /.*/
           pre-steps:
             - run:
                 command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
