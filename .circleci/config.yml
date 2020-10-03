@@ -50,6 +50,7 @@ commands:
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       #
+      - run: echo "ORG_GRADLE_PROECT_VERSION=${ORG_GRADLE_PROJECT_VERSION}"
       - run: ./gradlew build <<# parameters.upload >> bintrayUpload <</ parameters.upload >>
       #
       - save_cache:
