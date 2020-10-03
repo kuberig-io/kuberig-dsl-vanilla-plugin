@@ -28,7 +28,7 @@ commands:
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       #
-      - run: echo "ORG_GRADLE_PROECT_VERSION=${ORG_GRADLE_PROJECT_VERSION}"
+      - run: echo "ORG_GRADLE_PROJECT_VERSION=${ORG_GRADLE_PROJECT_VERSION}"
       - run: ./gradlew build <<# parameters.upload >> bintrayUpload <</ parameters.upload >>
       #
       - save_cache:
@@ -52,12 +52,16 @@ jobs:
     executor: gradle
     steps:
       - checkout
+      - run:
+          command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
       - gradle-build:
           upload: false
   release-build:
     executor: gradle
     steps:
       - checkout
+      - run:
+          command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
       - gradle-build:
           upload: true
 
@@ -66,9 +70,6 @@ workflows:
     jobs:
       - build:
           context: kuberig-context
-          pre-steps:
-            - run:
-                command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
   release:
     jobs:
       - release-build:
@@ -77,6 +78,3 @@ workflows:
             tags:
               only:
                 - /.*/
-          pre-steps:
-            - run:
-                command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
