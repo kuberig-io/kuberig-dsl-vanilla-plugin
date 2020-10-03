@@ -4,28 +4,6 @@
 #
 version: 2.1
 
-workflows:
-  build:
-    jobs:
-      - build:
-          context: kuberig-context
-          jobs:
-            - build:
-                pre-steps:
-                  - run:
-                      command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-      - release:
-          context: kuberig-context
-          filters:
-            tags:
-              only:
-                - /.*/
-          jobs:
-            - build-and-upload:
-                pre-steps:
-                  - run:
-                      command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
-
 executors:
   gradle:
     docker:
@@ -82,3 +60,25 @@ jobs:
       - checkout
       - gradle-build:
           upload: true
+
+workflows:
+  build:
+    jobs:
+      - build:
+          context: kuberig-context
+          jobs:
+            - build:
+                pre-steps:
+                  - run:
+                      command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+      - release:
+          context: kuberig-context
+          filters:
+            tags:
+              only:
+                - /.*/
+          jobs:
+            - build-and-upload:
+                pre-steps:
+                  - run:
+                      command: export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
