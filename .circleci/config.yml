@@ -54,14 +54,14 @@ jobs:
       - checkout
       - run: |
           export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-          &gradle upload=false
+          &gradle-build upload=false
   release-build:
     executor: gradle
     steps:
       - checkout
       - run: |
           export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
-          &gradle upload=true
+          &gradle-build upload=true
 
 workflows:
   build:
