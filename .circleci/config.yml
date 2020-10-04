@@ -17,6 +17,8 @@ commands:
   gradle-build:
     description: "Execute a gradle-wrapper build with a specific version and conditionally upload it"
     parameters:
+      version:
+        type: string
       upload:
         type: boolean
         default: false
@@ -28,8 +30,10 @@ commands:
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       #
-      - run: echo "ORG_GRADLE_PROJECT_VERSION=${ORG_GRADLE_PROJECT_VERSION}"
-      - run: ./gradlew build <<# parameters.upload >> bintrayUpload <</ parameters.upload >>
+      - run: |
+          export ORG_GRADLE_PROJECT_VERSION="<< parameters.version >>"
+          echo "ORG_GRADLE_PROJECT_VERSION=${ORG_GRADLE_PROJECT_VERSION}"
+          ./gradlew build <<# parameters.upload >> bintrayUpload <</ parameters.upload >>
       #
       - save_cache:
           paths:
@@ -52,16 +56,16 @@ jobs:
     executor: gradle
     steps:
       - checkout
-      - run: |
-          export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-          &gradle-build upload=false
+      - gradle-build:
+          version: ${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
+          upload: false
   release-build:
     executor: gradle
     steps:
       - checkout
-      - run: |
-          export ORG_GRADLE_PROJECT_VERSION="${CIRCLE_TAG}"
-          &gradle-build upload=true
+      - gradle-build:
+          version: ${CIRCLE_TAG}
+          upload: true
 
 workflows:
   build:
