@@ -72,6 +72,9 @@ workflows:
     jobs:
       - build:
           context: kuberig-context
+          filters:
+            tags:
+              ignore: /.*/
   release:
     jobs:
       - release-build:
