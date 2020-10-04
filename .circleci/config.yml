@@ -78,5 +78,6 @@ workflows:
           context: kuberig-context
           filters:
             tags:
-              only:
-                - /.*/
+              only: /.*/
+            branches:
+              ignore: /.*/
