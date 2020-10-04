@@ -31,9 +31,9 @@ commands:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       #
       - run: |
-          export ORG_GRADLE_PROJECT_VERSION="<< parameters.version >>"
-          echo "ORG_GRADLE_PROJECT_VERSION=${ORG_GRADLE_PROJECT_VERSION}"
-          ./gradlew build <<# parameters.upload >> bintrayUpload <</ parameters.upload >>
+          export VERSION="<< parameters.version >>"
+          echo "VERSION=${VERSION}"
+          ./gradlew -Pversion=$VERSION build <<# parameters.upload >> bintrayUpload <</ parameters.upload >>
       #
       - save_cache:
           paths:
