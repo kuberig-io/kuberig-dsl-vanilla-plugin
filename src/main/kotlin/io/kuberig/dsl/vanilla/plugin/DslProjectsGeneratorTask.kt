@@ -105,7 +105,7 @@ open class DslProjectsGeneratorTask : KubeRigTask() {
 
     private fun buildGradlektsLines(): List<String> {
         return Arrays.asList("plugins {",
-                "    id(\"eu.rigeldev.kuberig.dsl.generator\") ",
+                "    id(\"io.kuberig.dsl.generator\") ",
                 "}",
                 "",
                 "repositories {",
