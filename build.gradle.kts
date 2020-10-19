@@ -5,7 +5,7 @@ plugins {
     `java-gradle-plugin`
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.3.70"
+    id("org.jetbrains.kotlin.jvm") version "1.3.72"
 
     id("com.jfrog.bintray") version "1.8.5"
     id("maven-publish")
@@ -33,9 +33,12 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-modules-java8:2.9.10")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.10")
 
+    implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+
 
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")

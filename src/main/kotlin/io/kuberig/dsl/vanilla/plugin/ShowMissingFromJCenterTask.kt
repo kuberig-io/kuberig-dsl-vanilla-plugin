@@ -43,27 +43,32 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
             writer.newLine()
             for (projectSemVersion in projectSemVersions) {
                 val subProject = projectSemVersion.project
-                val jsonNodeHttpResponse = Unirest.get("https://api.bintray.com/packages/teyckmans/rigeldev-oss-maven/{module}")
-                        .routeParam("module", subProject.name)
+
+                val packageName =  "io-kuberig-" + subProject.name
+
+                val jsonNodeHttpResponse = Unirest.get("https://api.bintray.com/packages/teyckmans/rigeldev-oss-maven/{package}")
+                        .routeParam("package", packageName)
                         .asJson()
-                val x = "[" + subProject.name + "](https://bintray.com/teyckmans/rigeldev-oss-maven/" + subProject.name + ")"
+                val x = "[" + subProject.name + "](https://bintray.com/teyckmans/rigeldev-oss-maven/$packageName)"
                 println(x)
-                val upstreamVersion = subProject.name.substring("kuberig-dsl-kubernetes-".length)
+                val upstreamVersion = subProject.name.substring((this.project.name + "-").length)
                 if (jsonNodeHttpResponse.status == 404) {
-                    writer.append("|").append(subProject.name).append("|none|").append(x).append("|")
+                    writer.append("|").append(upstreamVersion).append("|none|").append(x).append("|")
                     writer.newLine()
+                    println("Available in [NONE]")
                 } else {
                     val linkedToRepos = jsonNodeHttpResponse.body.getObject().getJSONArray("linked_to_repos")
                     if (linkedToRepos.length() == 0) {
                         writer.append("| ").append(upstreamVersion).append(" | rigeldev-oss-maven | ").append(x).append(" |")
                         writer.newLine()
-                        println("available in [rigeldev-oss-maven]")
+                        println("Available in [rigeldev-oss-maven]")
                         println("\t\tadd to jcenter with: " +
                                 "https://bintray.com/message/addPackageToJCenter?pkgPath=%2Fteyckmans%2Frigeldev-oss-maven%2F" + subProject.name + "&tab=general"
                         )
                     } else {
                         writer.append("| ").append(upstreamVersion).append(" | rigeldev-oss-maven, jcenter | ").append(x).append(" |")
                         writer.newLine()
+                        println("Available in [rigeldev-oss-maven, jcenter]")
                     }
                 }
             }

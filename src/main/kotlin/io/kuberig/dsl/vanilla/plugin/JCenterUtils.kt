@@ -2,9 +2,9 @@ package io.kuberig.dsl.vanilla.plugin
 
 import com.mashape.unirest.http.Unirest
 
-fun jcenterExists(moduleName: String, version: String): Boolean {
-    val response = Unirest.get("https://api.bintray.com/packages/teyckmans/rigeldev-oss-maven/{module}")
-            .routeParam("module", moduleName)
+fun jcenterExists(packageName: String, version: String): Boolean {
+    val response = Unirest.get("https://api.bintray.com/packages/teyckmans/rigeldev-oss-maven/{package}")
+            .routeParam("package", packageName)
             .asJson()
 
     if (response.status == 404) {
