@@ -1,4 +1,4 @@
-[![kuberig-io](https://circleci.com/gh/kuberig-io/kuberig-dsl-kubernetes.svg?style=svg)](https://app.circleci.com/pipelines/github/kuberig-io/kuberig-dsl-vanilla-plugin)
+[![kuberig-io](https://circleci.com/gh/kuberig-io/kuberig-dsl-vanilla-plugin.svg?style=svg)](https://app.circleci.com/pipelines/github/kuberig-io/kuberig-dsl-vanilla-plugin)
 
 # kuberig-dsl-vanilla-plugin
 Helper plugin to detect new upstream kubernetes and openshift versions and publish the kuberig-dsl for them.
