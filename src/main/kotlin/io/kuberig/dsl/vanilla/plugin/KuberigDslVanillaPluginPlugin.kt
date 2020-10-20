@@ -39,7 +39,7 @@ class KuberigDslVanillaPluginPlugin : Plugin<Project> {
             val subProjectsToPublish: MutableList<Project> = ArrayList()
             if (bintrayUser != null && bintrayApiKey != null) {
                 for (subProject in subProjects) {
-                    if (!jcenterExists(subProject.name, version, bintrayUser, bintrayApiKey)) {
+                    if (!jcenterExists("io-kuberig-" + subProject.name, version, bintrayUser, bintrayApiKey)) {
                         subProjectsToPublish.add(subProject)
                     }
                 }
