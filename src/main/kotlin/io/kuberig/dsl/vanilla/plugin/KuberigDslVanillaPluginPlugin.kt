@@ -19,6 +19,9 @@ import java.util.*
 class KuberigDslVanillaPluginPlugin : Plugin<Project> {
     override fun apply(project: Project) {
 
+        val bintrayUser = project.properties["bintrayUser"] as String
+        val bintrayApiKey = project.properties["bintrayApiKey"] as String
+
         project.extensions.create("kubeRigDslVanilla", KubeRigDslVanillaPluginExtension::class.java)
 
         project.tasks.register("generateDslProjects", DslProjectsGeneratorTask::class.java)
@@ -35,7 +38,7 @@ class KuberigDslVanillaPluginPlugin : Plugin<Project> {
             val subProjects = project.subprojects
             val subProjectsToPublish: MutableList<Project> = ArrayList()
             for (subProject in subProjects) {
-                if (!jcenterExists(subProject.name, version)) {
+                if (!jcenterExists(subProject.name, version, bintrayUser, bintrayApiKey)) {
                     subProjectsToPublish.add(subProject)
                 }
             }
@@ -92,9 +95,6 @@ class KuberigDslVanillaPluginPlugin : Plugin<Project> {
                 }
 
                 subProject.extensions.configure(BintrayExtension::class.java) {
-                    val bintrayApiKey = subProject.properties["bintrayApiKey"] as String
-                    val bintrayUser = subProject.properties["bintrayUser"] as String
-
                     it.user = bintrayUser
                     it.key = bintrayApiKey
                     it.publish = true

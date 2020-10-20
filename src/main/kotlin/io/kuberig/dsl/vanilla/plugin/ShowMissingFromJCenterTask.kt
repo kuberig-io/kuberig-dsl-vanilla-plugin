@@ -14,6 +14,9 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
     @TaskAction
     fun showMissingFromJCenter() {
 
+        val bintrayUser = project.properties["bintrayUser"] as String
+        val bintrayApiKey = project.properties["bintrayApiKey"] as String
+
         val projectSemVersions = mutableListOf<ProjectSemVersion>()
 
         val subProjects = project.subprojects
@@ -48,6 +51,7 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
 
                 val jsonNodeHttpResponse = Unirest.get("https://api.bintray.com/packages/teyckmans/rigeldev-oss-maven/{package}")
                         .routeParam("package", packageName)
+                        .basicAuth(bintrayUser, bintrayApiKey)
                         .asJson()
                 val x = "[" + subProject.name + "](https://bintray.com/teyckmans/rigeldev-oss-maven/$packageName)"
                 println(x)
