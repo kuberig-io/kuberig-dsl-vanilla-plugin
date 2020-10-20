@@ -67,7 +67,7 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
                         writer.newLine()
                         println("Available in [rigeldev-oss-maven]")
                         println("\t\tadd to jcenter with: " +
-                                "https://bintray.com/message/addPackageToJCenter?pkgPath=%2Fteyckmans%2Frigeldev-oss-maven%2F" + subProject.name + "&tab=general"
+                                "https://bintray.com/message/addPackageToJCenter?pkgPath=%2Fteyckmans%2Frigeldev-oss-maven%2F" + packageName + "&tab=general"
                         )
                     } else {
                         writer.append("| ").append(upstreamVersion).append(" | rigeldev-oss-maven, jcenter | ").append(x).append(" |")
