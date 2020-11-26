@@ -34,6 +34,8 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
             }
         })
 
+        val newVersions = mutableListOf<NewVersion>()
+
         configureUnirest()
         val statusFile = project.file("AVAILABILITY.MD")
         val memoryWriter = StringWriter()
@@ -69,6 +71,7 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
                         println("\t\tadd to jcenter with: " +
                                 "https://bintray.com/message/addPackageToJCenter?pkgPath=%2Fteyckmans%2Frigeldev-oss-maven%2F" + packageName + "&tab=general"
                         )
+                        newVersions.add(NewVersion(packageName))
                     } else {
                         writer.append("| ").append(upstreamVersion).append(" | rigeldev-oss-maven, jcenter | ").append(x).append(" |")
                         writer.newLine()
@@ -91,6 +94,13 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
 
         if (writeFile) {
             Files.writeString(statusFile.toPath(), newContent, StandardCharsets.UTF_8)
+        }
+
+        if (newVersions.isNotEmpty()) {
+            SlackUtils("kuberig-dsl-robot").newUpStreamVersions(
+                    extension.gitHubOwner,
+                    newVersions
+            )
         }
     }
 }
