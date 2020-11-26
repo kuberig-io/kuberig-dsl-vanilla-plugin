@@ -5,7 +5,7 @@ plugins {
     `java-gradle-plugin`
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
+    id("org.jetbrains.kotlin.jvm") version "1.4.20"
 
     id("com.jfrog.bintray") version "1.8.5"
     id("maven-publish")
@@ -35,6 +35,8 @@ dependencies {
 
     implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
+
+    implementation("com.slack.api:slack-api-client:1.3.2")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -104,4 +106,12 @@ configure<BintrayExtension> {
     })
 
     setPublications(project.name)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "11"
+        apiVersion = "1.3"
+    }
 }
