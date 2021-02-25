@@ -3,7 +3,6 @@
  */
 package io.kuberig.dsl.vanilla.plugin
 
-import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -59,7 +58,6 @@ class KuberigDslVanillaPluginPlugin : Plugin<Project> {
         project.run {
             subprojects {
                 val subProject = it
-                subProject.plugins.apply("com.jfrog.bintray")
                 subProject.plugins.apply("maven-publish")
                 subProject.plugins.apply("java")
                 subProject.plugins.apply("idea")
@@ -94,19 +92,6 @@ class KuberigDslVanillaPluginPlugin : Plugin<Project> {
                         it.artifact(sourcesJar.get())
                     }
 
-                }
-
-                subProject.extensions.configure(BintrayExtension::class.java) {
-                    it.user = bintrayUser
-                    it.key = bintrayApiKey
-                    it.publish = true
-
-                    it.pkg.repo = "rigeldev-oss-maven"
-                    it.pkg.name = "io-kuberig-" + subProject.name
-                    it.pkg.setLicenses("Apache-2.0")
-                    it.pkg.vcsUrl = "https://github.com/teyckmans/kuberig-dsl-kubernetes"
-
-                    it.setPublications(subProject.name)
                 }
             }
         }

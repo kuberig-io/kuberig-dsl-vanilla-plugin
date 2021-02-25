@@ -1,5 +1,3 @@
-import com.jfrog.bintray.gradle.BintrayExtension
-
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
@@ -7,7 +5,6 @@ plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.20"
 
-    id("com.jfrog.bintray") version "1.8.5"
     id("maven-publish")
 }
 
@@ -16,7 +13,7 @@ group = "io.kuberig.dsl.vanilla.plugin"
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -33,7 +30,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-modules-java8:2.9.10")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.10")
 
-    implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
 
     implementation("com.slack.api:slack-api-client:1.3.2")
@@ -79,9 +75,6 @@ val sourcesJar by tasks.registering(Jar::class) {
     from(sourceSets["main"].allSource)
 }
 
-val bintrayApiKey : String by project
-val bintrayUser : String by project
-
 configure<PublishingExtension> {
 
     publications {
@@ -91,27 +84,25 @@ configure<PublishingExtension> {
         }
     }
 
-}
+    repositories {
+        maven {
+            url = uri("https://gilab.com/api/v4/projects/24703950/packages/maven")
+            name = "GitLab"
+            credentials(HttpHeaderCredentials::class) {
+                name = "Job-Token"
+                value = System.getenv("CI_JOB_TOKEN")
+            }
+            authentication {
+                create<HttpHeaderAuthentication>("header")
+            }
+        }
+    }
 
-configure<BintrayExtension> {
-    user = bintrayUser
-    key = bintrayApiKey
-    publish = true
-
-    pkg(closureOf<BintrayExtension.PackageConfig> {
-        repo = "rigeldev-oss-maven"
-        name = project.name
-        setLicenses("Apache-2.0")
-        vcsUrl = "https://github.com/teyckmans/kuberig-dsl-kubernetes"
-    })
-
-    setPublications(project.name)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
-        apiVersion = "1.3"
     }
 }
