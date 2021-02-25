@@ -86,7 +86,7 @@ configure<PublishingExtension> {
 
     repositories {
         maven {
-            url = uri("https://gilab.com/api/v4/projects/24703950/packages/maven")
+            url = uri("https://gitlab.com/api/v4/projects/24703950/packages/maven")
             name = "GitLab"
             credentials(HttpHeaderCredentials::class) {
                 name = "Job-Token"
