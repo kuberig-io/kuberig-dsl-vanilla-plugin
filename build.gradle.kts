@@ -1,5 +1,3 @@
-import com.jfrog.bintray.gradle.BintrayExtension
-
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
@@ -7,7 +5,6 @@ plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.20"
 
-    id("com.jfrog.bintray") version "1.8.5"
     id("maven-publish")
 }
 
@@ -91,21 +88,6 @@ configure<PublishingExtension> {
         }
     }
 
-}
-
-configure<BintrayExtension> {
-    user = bintrayUser
-    key = bintrayApiKey
-    publish = true
-
-    pkg(closureOf<BintrayExtension.PackageConfig> {
-        repo = "rigeldev-oss-maven"
-        name = project.name
-        setLicenses("Apache-2.0")
-        vcsUrl = "https://github.com/teyckmans/kuberig-dsl-kubernetes"
-    })
-
-    setPublications(project.name)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

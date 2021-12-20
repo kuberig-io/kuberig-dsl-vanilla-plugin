@@ -3,6 +3,7 @@ package io.kuberig.dsl.vanilla.plugin
 import com.mashape.unirest.http.Unirest
 import org.gradle.api.tasks.TaskAction
 import java.io.BufferedWriter
+import java.io.File
 import java.io.StringWriter
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -86,14 +87,14 @@ open class ShowMissingFromJCenterTask : KubeRigTask() {
         val newContent = memoryWriter.toString()
 
         val writeFile = if (statusFile.exists()) {
-            val currentContent = Files.readString(statusFile.toPath(), StandardCharsets.UTF_8)
+            val currentContent = statusFile.readText()
             currentContent != newContent
         } else {
             true
         }
 
         if (writeFile) {
-            Files.writeString(statusFile.toPath(), newContent, StandardCharsets.UTF_8)
+            statusFile.writeText(newContent)
         }
 
         if (newVersions.isNotEmpty()) {
